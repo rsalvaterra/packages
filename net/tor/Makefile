@@ -26,6 +26,8 @@ PKG_FIXUP:=autoreconf
 PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=gc-sections lto
 
+PKG_ASLR_PIE_REGULAR:=1
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/tor/Default
@@ -125,6 +127,8 @@ CONFIGURE_ARGS += \
 	--with-libevent-dir="$(STAGING_DIR)/usr" \
 	--with-openssl-dir="$(STAGING_DIR)/usr" \
 	--with-zlib-dir="$(STAGING_DIR)/usr" \
+	--disable-gcc-hardening \
+	--disable-linker-hardening \
 	--disable-asciidoc \
 	--disable-html-manual \
 	--disable-manpage \
@@ -134,8 +138,7 @@ CONFIGURE_ARGS += \
 	--disable-lzma \
 	--disable-zstd \
 	--with-tor-user=tor \
-	--with-tor-group=tor \
-	--enable-pic
+	--with-tor-group=tor
 
 ifeq ($(BUILD_VARIANT),basic)
   CONFIGURE_ARGS += --disable-module-relay
